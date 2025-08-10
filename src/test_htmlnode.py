@@ -1,6 +1,6 @@
 import unittest
 
-from htmlnode import HTMLNode, LeafNode, ParentNode
+from src.htmlnode import HTMLNode, LeafNode, ParentNode
 
 
 class TestHTMLNode(unittest.TestCase):
@@ -8,9 +8,11 @@ class TestHTMLNode(unittest.TestCase):
         node = HTMLNode(tag="div", value="Hello", props={"class": "greeting"})
         with self.assertRaises(NotImplementedError):
             node.to_html()
-    
+
     def test_props_to_html(self):
-        node = HTMLNode(tag="a", props={"href": "http://example.com", "target": "_blank"})
+        node = HTMLNode(
+            tag="a", props={"href": "http://example.com", "target": "_blank"}
+        )
         expected = ' href="http://example.com" target="_blank"'
         actual = node.props_to_html()
         self.assertEqual(actual, expected)
@@ -26,11 +28,11 @@ class TestLeafNode(unittest.TestCase):
     def test_leaf_to_html_p(self):
         node = LeafNode("p", "Hello, world!")
         self.assertEqual(node.to_html(), "<p>Hello, world!</p>")
-    
+
     def test_leaf_to_html_with_props(self):
         node = LeafNode("a", "Click here", props={"href": "http://example.com"})
         self.assertEqual(node.to_html(), '<a href="http://example.com">Click here</a>')
-    
+
     def test_leaf_to_html_no_tag(self):
         node = LeafNode(None, "Just text")
         self.assertEqual(node.to_html(), "Just text")
@@ -50,7 +52,7 @@ class TestParentNode(unittest.TestCase):
             parent_node.to_html(),
             "<div><span><b>grandchild</b></span></div>",
         )
-    
+
     def test_to_html_with_children_and_props(self):
         child_node = LeafNode("b", "Bold text", {"class": "greeting"})
         parent_node = ParentNode("span", [child_node])
@@ -64,7 +66,7 @@ class TestParentNode(unittest.TestCase):
         expected = '<b><a href="http://example.com">Click here</a></b>'
         actual = parent_node.to_html()
         self.assertEqual(actual, expected)
-    
+
     def test_to_html_with_many_children(self):
         children = [
             LeafNode("b", "Bold text"),
@@ -76,7 +78,7 @@ class TestParentNode(unittest.TestCase):
         actual = parent_node.to_html()
         expected = "<p><b>Bold text</b>Normal text<i>italic text</i>Normal text</p>"
         self.assertEqual(actual, expected)
-    
+
     def test_to_html_with_many_children_and_props(self):
         children = [
             LeafNode("b", "Bold text"),
@@ -86,9 +88,11 @@ class TestParentNode(unittest.TestCase):
         ]
         parent_node = ParentNode("p", children=children, props={"id": "para1"})
         actual = parent_node.to_html()
-        expected = '<p id="para1"><b>Bold text</b>Normal text<i>italic text</i>Normal text</p>'
+        expected = (
+            '<p id="para1"><b>Bold text</b>Normal text<i>italic text</i>Normal text</p>'
+        )
         self.assertEqual(actual, expected)
-    
+
 
 if __name__ == "__main__":
     unittest.main()
