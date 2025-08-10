@@ -1,7 +1,11 @@
 import unittest
 
 from textnode import TextNode, TextType
-from utils import split_nodes_delimiter
+from utils import (
+    extract_markdown_images,
+    extract_markdown_links,
+    split_nodes_delimiter,
+)
 
 class TestInlineMarkdown(unittest.TestCase):
     def test_code_case(self):
@@ -55,3 +59,37 @@ class TestInlineMarkdown(unittest.TestCase):
             TextNode(" word", TextType.TEXT),
         ]
         self.assertListEqual(new_nodes, expected)
+
+
+class TestExtractMarkdown(unittest.TestCase):
+    def test_extract_single_markdown_image(self):
+        matches = extract_markdown_images(
+            "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png)"
+        )
+        expected = [("image", "https://i.imgur.com/zjjcJKZ.png")]
+        self.assertListEqual(matches, expected)
+
+    def test_extract_multiple_markdown_images(self):
+        text = "This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif) and ![obi wan](https://i.imgur.com/fJRm4Vk.jpeg)"
+        matches = extract_markdown_images(text)
+        expected = [
+            ("rick roll", "https://i.imgur.com/aKaOqIh.gif"),
+            ("obi wan", "https://i.imgur.com/fJRm4Vk.jpeg"),
+        ]
+        self.assertListEqual(matches, expected)
+    
+    def test_extract_single_markdown_link(self):
+        matches = extract_markdown_links(
+            "This is text with a [link](https://foo.com)"
+        )
+        expected = [("link", "https://foo.com")]
+        self.assertListEqual(matches, expected)
+
+    def test_extract_multiple_markdown_links(self):
+        text = "This is text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)"
+        matches = extract_markdown_links(text)
+        expected = [
+            ("to boot dev", "https://www.boot.dev"),
+            ("to youtube", "https://www.youtube.com/@bootdotdev"),
+        ]
+        self.assertListEqual(matches, expected)
