@@ -190,6 +190,21 @@ class TestInlineMarkdown(unittest.TestCase):
             new_nodes,
         )
 
+    def test_delim_bold_and_img(self):
+        node = TextNode(
+            "This line has **bold** text and an ![image](https://i.imgur.com/fJRm4Vk.jpeg)",
+            TextType.TEXT,
+        )
+        new_nodes = split_nodes_delimiter([node], "**", TextType.BOLD)
+        new_nodes = split_nodes_image(new_nodes)
+        expected_nodes = [
+            TextNode("This line has ", TextType.TEXT),
+            TextNode("bold", TextType.BOLD),
+            TextNode(" text and an ", TextType.TEXT),
+            TextNode("image", TextType.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg"),
+        ]
+        self.assertListEqual(new_nodes, expected_nodes)
+
     def test_text_to_textnodes(self):
         text = "This is **text** with an _italic_ word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
         nodes = text_to_textnodes(text)
