@@ -1,7 +1,7 @@
 import unittest
 
 from src.textnode import TextNode, TextType
-from src.utils import (
+from src.inline_markdown import (
     extract_markdown_images,
     extract_markdown_links,
     split_nodes_delimiter,
@@ -223,3 +223,7 @@ class TestInlineMarkdown(unittest.TestCase):
             TextNode("link", TextType.LINK, "https://boot.dev"),
         ]
         self.assertListEqual(expected_nodes, nodes)
+
+
+if __name__ == "__main__":
+    unittest.main()
