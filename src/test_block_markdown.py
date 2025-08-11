@@ -78,12 +78,12 @@ This is the same paragraph on a new line
     def test_block_to_block_type_unordered_list(self):
         block = "- This is\n- a list\n- that is\n- unordered"
         block_type = block_to_block_type(block)
-        self.assertEqual(block_type, BlockType.UNORDERED_LIST)
+        self.assertEqual(block_type, BlockType.ULIST)
 
     def test_block_to_block_type_ordered_list(self):
         block = "1. This is\n2. a list\n3. that is\n4. ordered"
         block_type = block_to_block_type(block)
-        self.assertEqual(block_type, BlockType.ORDERED_LIST)
+        self.assertEqual(block_type, BlockType.OLIST)
 
 
 if __name__ == "__main__":
