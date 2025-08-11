@@ -25,8 +25,8 @@ jobs:
 
     - name: Check for formatting issues with black
       run: |
-        black --check $(git ls-files '*.py')
+        uv run black --check $(git ls-files '*.py')
         
     - name: Analysing the code with pylint
       run: |
-        pylint $(git ls-files '*.py')
+        uv run pylint $(git ls-files '*.py')
