@@ -14,7 +14,9 @@ def split_nodes_delimiter(
         split_nodes = []
         split_node_text = node.text.split(delimiter)
         if len(split_node_text) % 2 == 0:
-            raise Exception("Invalid Markdown syntax. Corresponding closing delimeter not detected.")
+            raise Exception(
+                "Invalid Markdown syntax. Corresponding closing delimeter not detected."
+            )
         for idx, text in enumerate(split_node_text):
             if text == "":
                 continue
@@ -51,10 +53,10 @@ def split_nodes_link(old_nodes: list[TextNode]) -> list[TextNode]:
                 new_nodes.append(TextNode(split_node_text[0], TextType.TEXT))
             new_nodes.append(TextNode(link_text, TextType.LINK, link))
             node_text = split_node_text[1]
-        
+
         if node_text:
             new_nodes.append(TextNode(node_text, TextType.TEXT))
-    
+
     return new_nodes
 
 
@@ -66,7 +68,7 @@ def split_nodes_image(old_nodes: list[TextNode]) -> list[TextNode]:
         if not images or node.text_type != TextType.TEXT:
             new_nodes.append(node)
             continue
-        
+
         for image_alt, image_link in images:
             split_node_text = node_text.split(f"![{image_alt}]({image_link})", 1)
             if split_node_text[0]:
@@ -76,6 +78,5 @@ def split_nodes_image(old_nodes: list[TextNode]) -> list[TextNode]:
 
         if node_text:
             new_nodes.append(TextNode(node_text, TextType.TEXT))
-            
-    
+
     return new_nodes
