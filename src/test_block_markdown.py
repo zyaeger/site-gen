@@ -1,6 +1,6 @@
 import unittest
 
-from src.block_markdown import markdown_to_blocks
+from src.block_markdown import BlockType, block_to_block_type, markdown_to_blocks
 
 
 class TestBlockMarkdown(unittest.TestCase):
@@ -44,6 +44,46 @@ This is the same paragraph on a new line
             "- This is a list\n- with items",
         ]
         self.assertEqual(blocks, expected)
+
+    def test_block_to_block_type_h1(self):
+        block = "# This is a heading"
+        block_type = block_to_block_type(block)
+        self.assertEqual(block_type, BlockType.HEADING)
+
+    def test_block_to_block_type_h2(self):
+        block = "## This is a heading"
+        block_type = block_to_block_type(block)
+        self.assertEqual(block_type, BlockType.HEADING)
+
+    def test_block_to_block_type_h6(self):
+        block = "###### This is a heading"
+        block_type = block_to_block_type(block)
+        self.assertEqual(block_type, BlockType.HEADING)
+
+    def test_block_to_block_type_p(self):
+        block = "This is just a paragraph"
+        block_type = block_to_block_type(block)
+        self.assertEqual(block_type, BlockType.PARAGRAPH)
+
+    def test_block_to_block_type_code(self):
+        block = "```x = 10\ny = 5```"
+        block_type = block_to_block_type(block)
+        self.assertEqual(block_type, BlockType.CODE)
+
+    def test_block_to_block_type_quote(self):
+        block = "> To be\n> or not\n> to be"
+        block_type = block_to_block_type(block)
+        self.assertEqual(block_type, BlockType.QUOTE)
+
+    def test_block_to_block_type_unordered_list(self):
+        block = "- This is\n- a list\n- that is\n- unordered"
+        block_type = block_to_block_type(block)
+        self.assertEqual(block_type, BlockType.UNORDERED_LIST)
+
+    def test_block_to_block_type_ordered_list(self):
+        block = "1. This is\n2. a list\n3. that is\n4. ordered"
+        block_type = block_to_block_type(block)
+        self.assertEqual(block_type, BlockType.ORDERED_LIST)
 
 
 if __name__ == "__main__":
