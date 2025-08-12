@@ -11,7 +11,7 @@ TEMPLATE_PATH = "./template.html"
 
 def main():
     print("Copying static files to public directory...")
-    copy_dir("./static", "./public")
+    copy_dir(STATIC_PATH, PUBLIC_PATH)
 
     print("Generating page...")
     generate_page(
