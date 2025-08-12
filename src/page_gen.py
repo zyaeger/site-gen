@@ -29,7 +29,7 @@ def extract_title(markdown: str) -> str:
     raise ValueError("Provided Markdown does not contain h1 header")
 
 
-def generate_page(from_path: str, template_path: str, dest_path: str) -> None:
+def generate_page(from_path: str, template_path: str, dest_path: str, basepath: str) -> None:
     print(f"Generating page from {from_path} to {dest_path} using {template_path}")
     with open(from_path, "r", encoding="utf-8") as md_f:
         md = md_f.read()
@@ -40,6 +40,8 @@ def generate_page(from_path: str, template_path: str, dest_path: str) -> None:
     html_string = markdown_to_html_node(md).to_html()
     title = extract_title(md)
     html = template.replace("{{ Title }}", title).replace("{{ Content }}", html_string)
+    html = html.replace("href=\"/", f"href=\"{basepath}")
+    html = html.replace("src=\"/", f"src=\"{basepath}")
 
     dest_dir = os.path.dirname(dest_path)
     if dest_dir != "":
@@ -50,7 +52,7 @@ def generate_page(from_path: str, template_path: str, dest_path: str) -> None:
 
 
 def generate_pages_recursive(
-    dir_path_content: str, template_path: str, dest_dir_path: str
+    dir_path_content: str, template_path: str, dest_dir_path: str, basepath: str
 ) -> None:
     contents = os.listdir(dir_path_content)
     for item in contents:
@@ -58,7 +60,7 @@ def generate_pages_recursive(
         next_dest_path = os.path.join(dest_dir_path, item)
         if os.path.isfile(next_path_content):
             next_dest_path = Path(next_dest_path).with_suffix(".html")
-            generate_page(next_path_content, template_path, next_dest_path)
+            generate_page(next_path_content, template_path, next_dest_path, basepath)
         else:
             # print(f"Moving to next dir: {next_path_content}, {next_dest_path}")
-            generate_pages_recursive(next_path_content, template_path, next_dest_path)
+            generate_pages_recursive(next_path_content, template_path, next_dest_path, basepath)
