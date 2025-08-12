@@ -1,14 +1,24 @@
 import os
 import shutil
 
+from src.page_gen import generate_page
 
 STATIC_PATH = "./static"
 PUBLIC_PATH = "./public"
+CONTENT_PATH = "./content"
+TEMPLATE_PATH = "./template.html"
 
 
 def main():
     print("Copying static files to public directory...")
     copy_dir("./static", "./public")
+
+    print("Generating page...")
+    generate_page(
+        os.path.join(CONTENT_PATH, "index.md"),
+        TEMPLATE_PATH,
+        os.path.join(PUBLIC_PATH, "index.html"),
+    )
     print("Done!")
 
 
