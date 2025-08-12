@@ -61,6 +61,4 @@ def generate_pages_recursive(
             generate_page(next_path_content, template_path, next_dest_path)
         else:
             # print(f"Moving to next dir: {next_path_content}, {next_dest_path}")
-            generate_pages_recursive(
-                next_path_content, template_path, next_dest_path
-            )
+            generate_pages_recursive(next_path_content, template_path, next_dest_path)
