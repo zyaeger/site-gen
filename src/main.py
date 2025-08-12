@@ -13,8 +13,8 @@ def main():
     basepath = "/"
     if len(sys.argv) >= 2:
         basepath = sys.argv[1]
-    print(basepath)
-    print("Copying static files to public directory...")
+
+    print("Copying static files to docs directory...")
     page_gen.copy_dir(STATIC_PATH, DOCS_PATH)
 
     print("Generating content...")
